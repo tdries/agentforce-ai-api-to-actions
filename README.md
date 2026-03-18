@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="brand/Biztory_logo.webp" alt="Biztory" width="260"/>
-</p>
+![](Banner1.webp)
 
 # agentforce-ai-api-to-actions
 
@@ -84,6 +82,8 @@ Progress is streamed in real time. On success, a link opens directly to the Exte
 **Example:** agentforce-ai-api-to-actions works on plain HTML documentation pages — no OpenAPI spec required.
 
 ![Registered External Service in Salesforce](screenshot.png)
+
+![](Inline.avif)
 
 ### After registration
 
