@@ -79,7 +79,7 @@ Progress is streamed in real time. On success, a link opens directly to the Exte
 
 **Example:** agentforce-ai-api-to-actions works on plain HTML documentation pages — no OpenAPI spec required.
 
-![Pokemon API docs example](pokemon-info.jpg)
+![Registered External Service in Salesforce](screenshot.png)
 
 ### After registration
 
