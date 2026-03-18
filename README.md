@@ -1,10 +1,10 @@
-# auto-api
+# agentforce-ai-api-to-actions
 
 **Register any external API as a Salesforce Agentforce action — in seconds.**
 
-[![auto-api demo](https://img.youtube.com/vi/P6uatEaLpY8/maxresdefault.jpg)](https://www.youtube.com/watch?v=P6uatEaLpY8&t=51s)
+[![agentforce-ai-api-to-actions demo](https://img.youtube.com/vi/P6uatEaLpY8/maxresdefault.jpg)](https://www.youtube.com/watch?v=P6uatEaLpY8&t=51s)
 
-Paste a link to any API documentation (OpenAPI spec or HTML docs page) and auto-api will:
+Paste a link to any API documentation (OpenAPI spec or HTML docs page) and agentforce-ai-api-to-actions will:
 
 1. Fetch and parse the documentation
 2. Use Claude to generate or normalize a valid OpenAPI 3.0 spec
@@ -29,8 +29,8 @@ The registered service immediately appears in Agent Studio as a set of callable 
 ## Setup
 
 ```bash
-git clone https://github.com/your-org/auto-api.git
-cd auto-api
+git clone https://github.com/your-org/agentforce-ai-api-to-actions.git
+cd agentforce-ai-api-to-actions
 
 pip install -r requirements.txt
 
@@ -77,7 +77,7 @@ SF_API_VERSION=61.0
 
 Progress is streamed in real time. On success, a link opens directly to the External Services page in Salesforce Setup.
 
-**Example:** auto-api works on plain HTML documentation pages — no OpenAPI spec required.
+**Example:** agentforce-ai-api-to-actions works on plain HTML documentation pages — no OpenAPI spec required.
 
 ![Pokemon API docs example](pokemon-info.jpg)
 

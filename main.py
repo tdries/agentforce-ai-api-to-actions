@@ -1,4 +1,4 @@
-"""auto-api: Register any external API as a Salesforce Agentforce action.
+"""agentforce-ai-api-to-actions: Register any external API as a Salesforce Agentforce action.
 
 Usage:
     pip install -r requirements.txt
@@ -31,7 +31,7 @@ from pydantic import BaseModel
 
 load_dotenv(override=False)  # don't overwrite vars already set in the shell
 
-app = FastAPI(title="auto-api")
+app = FastAPI(title="agentforce-ai-api-to-actions")
 if os.path.isdir("brand"):
     app.mount("/brand", StaticFiles(directory="brand"), name="brand")
 SF_VERSION = os.getenv("SF_API_VERSION", "61.0")
