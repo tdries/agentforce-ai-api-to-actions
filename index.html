@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Connector — Biztory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0 }
+  :root {
+    --navy:     #00375A;
+    --blue:     #006EFF;
+    --blue-h:   #0058d4;
+    --lime:     #64FA8C;
+    --orange:   #FF5833;
+    --white:    #FFFFFF;
+    --muted:    rgba(255,255,255,0.5);
+    --border:   rgba(255,255,255,0.12);
+    --card-bg:  rgba(255,255,255,0.07);
+    --input-bg: rgba(0,0,0,0.22);
+    --radius:   8px;
+    --font:     'Be Vietnam Pro', sans-serif;
+  }
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--font);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 52px 20px 64px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ── Pattern accent ── */
+  .pattern-tr {
+    position: fixed;
+    top: -60px; right: -60px;
+    width: 420px; height: 420px;
+    background: url('/brand/Patterns%20-%20PNG/Pattern_Large%201_1-1_Blue_RGB.png') no-repeat center / contain;
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .pattern-bl {
+    position: fixed;
+    bottom: -60px; left: -60px;
+    width: 360px; height: 360px;
+    background: url('/brand/Patterns%20-%20PNG/Pattern_Large%205_1-1_Blue_RGB.png') no-repeat center / contain;
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .content { position: relative; z-index: 1; width: 100%; display: flex; flex-direction: column; align-items: center }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 44px;
+    text-align: center;
+  }
+  .header-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo { height: 26px; width: auto }
+  .divider-v {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    display: inline-block;
+  }
+  .product-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--white);
+  }
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--lime);
+  }
+  .eyebrow-dot {
+    width: 7px; height: 7px;
+    background: var(--lime);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  h1 {
+    font-size: 1.55rem;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--white);
+    line-height: 1.25;
+    max-width: 460px;
+  }
+  .tagline {
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    max-width: 400px;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    width: 100%;
+    max-width: 620px;
+  }
+  .card + .card { margin-top: 12px }
+
+  /* ── Form ── */
+  .field { margin-bottom: 20px }
+  .field:last-child { margin-bottom: 0 }
+  label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    display: block;
+    margin-bottom: 7px;
+  }
+  input[type=text], input[type=password], input[type=url] {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--white);
+    padding: 10px 14px;
+    font-size: 0.875rem;
+    font-family: var(--font);
+    letter-spacing: -0.02em;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(0,110,255,.18);
+  }
+  input::placeholder { color: rgba(255,255,255,0.28) }
+  .hint {
+    color: var(--muted);
+    font-size: 0.77rem;
+    margin-top: 6px;
+    line-height: 1.65;
+  }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px }
+
+  details summary {
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    user-select: none;
+    padding: 10px 0 4px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: color .15s;
+    letter-spacing: -0.02em;
+  }
+  details summary:hover { color: var(--white) }
+  details summary::-webkit-details-marker { display: none }
+  details summary::before { content: "▶"; font-size: 0.5rem; transition: transform .2s; display: inline-block; color: var(--blue) }
+  details[open] summary::before { transform: rotate(90deg) }
+  details .inner { padding-top: 18px; border-top: 1px solid var(--border); margin-top: 12px }
+
+  /* ── Button ── */
+  .btn {
+    width: 100%;
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: var(--font);
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn:hover { background: var(--blue-h) }
+  .btn:active { transform: scale(.99) }
+  .btn:disabled { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.3); cursor: not-allowed; transform: none }
+
+  /* ── Progress ── */
+  #progress { display: none }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.875rem;
+    color: var(--muted);
+    transition: color .2s;
+    letter-spacing: -0.02em;
+  }
+  .step:last-child { border-bottom: none }
+  .step.done { color: var(--white) }
+  .step.active { color: var(--white) }
+  .step-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.2);
+    transition: background .25s;
+  }
+  .step.done .step-dot { background: var(--lime) }
+  .step.active .step-dot { background: var(--blue); animation: pulse-dot 1s ease-in-out infinite }
+  @keyframes pulse-dot { 0%,100% { opacity:1 } 50% { opacity:.35 } }
+
+  .bar-wrap {
+    background: rgba(255,255,255,0.1);
+    border-radius: 99px;
+    height: 2px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  .bar {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 99px;
+    transition: width .5s ease, background .3s;
+    width: 0%;
+  }
+
+  /* ── Result ── */
+  #result { display: none }
+  .banner {
+    border-radius: 6px;
+    padding: 20px 22px;
+  }
+  .banner.success {
+    background: rgba(100,250,140,.07);
+    border: 1px solid rgba(100,250,140,.22);
+  }
+  .banner.error {
+    background: rgba(255,88,51,.07);
+    border: 1px solid rgba(255,88,51,.22);
+  }
+  .banner-title {
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .banner-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .banner.success .banner-title { color: var(--lime) }
+  .banner.success .banner-dot { background: var(--lime) }
+  .banner.error .banner-title { color: var(--orange) }
+  .banner.error .banner-dot { background: var(--orange) }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    letter-spacing: -0.02em;
+  }
+  .meta-row:last-of-type { border-bottom: none }
+  .meta-label { color: var(--muted) }
+  .meta-val { color: var(--white); font-weight: 500 }
+
+  .ops-wrap { margin-top: 14px }
+  .ops-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 8px;
+  }
+  .ops-list { display: flex; flex-wrap: wrap; gap: 6px }
+  .op-badge {
+    background: rgba(0,110,255,.1);
+    border: 1px solid rgba(0,110,255,.28);
+    border-radius: 9999px;
+    padding: 3px 12px;
+    font-size: 0.75rem;
+    color: var(--blue);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 18px;
+    background: var(--blue);
+    color: var(--white);
+    border-radius: 6px;
+    padding: 9px 18px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+    letter-spacing: -0.02em;
+    transition: background .15s;
+  }
+  .link-btn:hover { background: var(--blue-h) }
+
+  .next-steps {
+    margin-top: 14px;
+    padding: 13px 15px;
+    background: rgba(0,110,255,.07);
+    border: 1px solid rgba(0,110,255,.15);
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .next-steps strong { color: var(--white); font-weight: 500 }
+
+  /* ── Footer ── */
+  footer {
+    margin-top: 52px;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.77rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  footer a { color: rgba(255,255,255,0.3); text-decoration: none; transition: color .15s }
+  footer a:hover { color: rgba(255,255,255,0.7) }
+</style>
+</head>
+<body>
+<div class="pattern-tr"></div>
+<div class="pattern-bl"></div>
+<div class="content">
+
+  <div class="header">
+    <div class="header-row">
+      <img class="logo" src="/brand/Biztory_logo.png" alt="Biztory">
+      <span class="divider-v"></span>
+      <span class="product-name">API Connector</span>
+    </div>
+    <div class="eyebrow"><span class="eyebrow-dot"></span> Data + AI Activation</div>
+    <h1>Register any API as an Agentforce action.</h1>
+    <p class="tagline">Paste API documentation. Get a live Salesforce External Service — ready for Agent Studio in seconds.</p>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label>API Documentation URL</label>
+      <input id="url" type="url" placeholder="https://api.example.com/openapi.yaml  or  https://docs.example.com/api" autofocus>
+      <p class="hint">Accepts OpenAPI/Swagger spec files (.yaml, .json) or any HTML documentation page.</p>
+    </div>
+
+    <div class="field">
+      <label>Service Name <span style="font-weight:400;text-transform:none;letter-spacing:0;opacity:.55">(optional)</span></label>
+      <input id="service_name" type="text" placeholder="Auto-detected from URL">
+    </div>
+
+    <details>
+      <summary>Salesforce credentials</summary>
+      <div class="inner">
+        <div class="field">
+          <label>Instance URL</label>
+          <input id="sf_instance_url" type="url" placeholder="https://yourorg.my.salesforce.com">
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label>Username</label>
+            <input id="sf_username" type="text" placeholder="user@company.com">
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input id="sf_password" type="password" placeholder="••••••••">
+          </div>
+        </div>
+        <div class="field">
+          <label>Security Token</label>
+          <input id="sf_security_token" type="password" placeholder="Leave blank if IP is whitelisted">
+        </div>
+        <p class="hint">Leave all fields blank to use values from .env</p>
+      </div>
+    </details>
+
+    <button class="btn" id="btn" onclick="run()">
+      <span id="btn-label">Register API</span>
+      <span>→</span>
+    </button>
+  </div>
+
+  <!-- Progress -->
+  <div class="card" id="progress">
+    <div id="steps"></div>
+    <div class="bar-wrap"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <!-- Result -->
+  <div class="card" id="result"></div>
+
+  <footer>
+    <span>Powered by</span>
+    <a href="https://www.biztory.com" target="_blank">biztory.com</a>
+    <span>·</span>
+    <a href="https://developer.salesforce.com/docs/ai/agentforce" target="_blank">Salesforce Agentforce</a>
+  </footer>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id)
+let stepLog = []
+
+function addStep(text, progress, active = true) {
+  stepLog.push({ text, active })
+  renderSteps()
+  $('bar').style.width = progress + '%'
+}
+
+function renderSteps() {
+  const html = stepLog.map((s, i) => {
+    const isLast = i === stepLog.length - 1
+    const cls = isLast && s.active ? 'step active' : 'step done'
+    return `<div class="${cls}"><div class="step-dot"></div>${s.text}</div>`
+  }).join('')
+  $('steps').innerHTML = html
+}
+
+function finalizeSteps(success) {
+  stepLog = stepLog.map(s => ({ ...s, active: false }))
+  $('steps').innerHTML = stepLog.map(s =>
+    `<div class="step done"><div class="step-dot"></div>${s.text}</div>`
+  ).join('')
+  $('bar').style.width = '100%'
+  $('bar').style.background = success ? 'var(--lime)' : 'var(--orange)'
+}
+
+async function run() {
+  const url = $('url').value.trim()
+  if (!url) { $('url').focus(); return }
+
+  const payload = {
+    url,
+    service_name: $('service_name').value.trim() || null,
+    sf_instance_url: $('sf_instance_url').value.trim() || null,
+    sf_username: $('sf_username').value.trim() || null,
+    sf_password: $('sf_password').value || null,
+    sf_security_token: $('sf_security_token').value || null,
+  }
+
+  stepLog = []
+  $('steps').innerHTML = ''
+  $('bar').style.width = '0%'
+  $('bar').style.background = 'var(--blue)'
+  $('result').style.display = 'none'
+  $('progress').style.display = 'block'
+  $('btn').disabled = true
+  $('btn-label').textContent = 'Registering...'
+
+  try {
+    const resp = await fetch('/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+
+    const reader = resp.body.getReader()
+    const dec = new TextDecoder()
+    let buf = ''
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      buf += dec.decode(value)
+      const lines = buf.split('\n')
+      buf = lines.pop()
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue
+        const ev = JSON.parse(line.slice(6))
+        if (ev.step) addStep(ev.step, ev.progress || 50)
+        if (ev.done) {
+          if (ev.success) { finalizeSteps(true); showSuccess(ev) }
+          else { finalizeSteps(false); showError(ev.error || 'Unknown error') }
+        }
+      }
+    }
+  } catch (e) {
+    finalizeSteps(false)
+    showError(e.message)
+  } finally {
+    $('btn').disabled = false
+    $('btn-label').textContent = 'Register API'
+  }
+}
+
+function showSuccess(ev) {
+  const ops = (ev.operations || []).map(op => `<span class="op-badge">${op}</span>`).join('')
+  $('result').innerHTML = `
+    <div class="banner success">
+      <div class="banner-title"><span class="banner-dot"></span>External Service registered</div>
+      <div class="meta-row"><span class="meta-label">External Service</span><span class="meta-val">${ev.service_name}</span></div>
+      <div class="meta-row"><span class="meta-label">Named Credential</span><span class="meta-val">${ev.named_credential}</span></div>
+      <div class="meta-row"><span class="meta-label">API Host</span><span class="meta-val">${ev.host}</span></div>
+      <div class="ops-wrap">
+        <div class="ops-label">Registered operations</div>
+        <div class="ops-list">${ops}</div>
+      </div>
+      <a class="link-btn" href="${ev.setup_url}" target="_blank">Open in Salesforce Setup →</a>
+      <div class="next-steps">
+        <strong>Next steps.</strong> In Agent Studio, create or open a Topic — Add Action — select an External Service action from <em>${ev.service_name}</em>. If the API requires an API key, set it on the Named Credential <em>${ev.named_credential}</em> first.
+      </div>
+    </div>`
+  $('result').style.display = 'block'
+}
+
+function showError(msg) {
+  $('result').innerHTML = `
+    <div class="banner error">
+      <div class="banner-title"><span class="banner-dot"></span>Registration failed</div>
+      <p style="font-size:.875rem;line-height:1.65;color:var(--muted)">${msg}</p>
+    </div>`
+  $('result').style.display = 'block'
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !$('btn').disabled) run()
+})
+</script>
+</body>
+</html>
