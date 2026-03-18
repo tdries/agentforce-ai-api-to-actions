@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="brand/Biztory_logo.webp" alt="Biztory" width="260"/>
+</p>
+
 # agentforce-ai-api-to-actions
 
 **Register any external API as a Salesforce Agentforce action — in seconds.**
